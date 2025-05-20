@@ -1,9 +1,31 @@
+/**
+
+This class contains all necessary methods needed by the player.
+It extends the entity class to obtain things necessar for combat and
+gameplay like hitboxes and attackboxes.
+
+@author Joshua Patrick I. Bandola (240499) Carl A. Basco (240558)
+@version 20 May 2024
+
+I have not discussed the Java language code in my program
+with anyone other than my instructor or the teaching assistants
+assigned to this course.
+
+I have not used Java language code obtained from another student,
+or any other unauthorized source, either modified or unmodified.
+If any Java language code or documentation used in my program
+was obtained from another source, such as a textbook or website,
+that has been clearly noted with a proper citation in the comments
+of my program.
+
+**/
+
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.*;
 import static utils.Constants.PlayerConstants.*;
 
-public class PlayerSprite extends Entity{
+public class Player extends Entity{
 
     private int playerNum;
     private BufferedImage image, bgImage;
@@ -35,7 +57,7 @@ public class PlayerSprite extends Entity{
 
     private Rectangle2D.Double attackBox;
 
-    public PlayerSprite(double x, double y, int width, int height, String character) {
+    public Player(double x, double y, int width, int height, String character) {
         super(x,y,width,height);
         loadAnimations(character);
         aniSpeed = 5;

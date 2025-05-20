@@ -1,3 +1,24 @@
+/**
+
+This class is contains all the components for the game.
+This is where the players, enemies, and the map all contained.
+
+@author Joshua Patrick I. Bandola (240499) Carl A. Basco (240558)
+@version 20 May 2024
+
+I have not discussed the Java language code in my program
+with anyone other than my instructor or the teaching assistants
+assigned to this course.
+
+I have not used Java language code obtained from another student,
+or any other unauthorized source, either modified or unmodified.
+If any Java language code or documentation used in my program
+was obtained from another source, such as a textbook or website,
+that has been clearly noted with a proper citation in the comments
+of my program.
+
+**/
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -10,8 +31,8 @@ public class GameFrame extends JFrame {
 
     private int width, height;
     private Container contentPane;
-    private PlayerSprite me;
-    private PlayerSprite enemy;
+    private Player player1;
+    private Player player2;
     private DrawingComponent dc;
     private Timer animationTimer;
     private boolean run, jump, left, right;
@@ -73,25 +94,24 @@ public class GameFrame extends JFrame {
         setUpKeyListener();
         this.setVisible(true);
         setUpAnimationTimer();
-        levelManager.update();
     }
 
     private void createSprites() {
         levelManager = new LevelManager(this);
         enemyManager = new EnemyManager(this);
         if (playerID == 1) {
-            enemy = new PlayerSprite(100,342,256,256,"Sun");
-            me = new PlayerSprite(100,342,256,256,"Moon");
+            player2 = new Player(100,342,256,256,"Sun");
+            player1 = new Player(100,342,256,256,"Moon");
         } else {
-            enemy = new PlayerSprite(150,342,256,256,"Moon");
-            me = new PlayerSprite(150,342,256,256,"Sun");
+            player2 = new Player(150,342,256,256,"Moon");
+            player1 = new Player(150,342,256,256,"Sun");
         }
-        me.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        player1.loadLevelData(levelManager.getCurrentLevel().getLevelData());
         
     }
 
     private void checkCloseToBorder() {
-        int playerX = (int) me.getHitbox().x;
+        int playerX = (int) player1.getHitbox().x;
         int diff = playerX - xLvlOffset;
 
         if (diff > rightBorder) {
@@ -130,13 +150,13 @@ public class GameFrame extends JFrame {
                 
                 if (left) {
                     xSpeed = -playerSpeed;
-                    me.setLeft(true);
+                    player1.setLeft(true);
                 }
 
                 if (inAir) {
 
-                    if (Collision.CanMoveHere(me.hitbox.x, me.hitbox.y + airSpeed, me.hitbox.width, me.hitbox.height, me.lvlData)) {
-                        me.hitbox.y += airSpeed;
+                    if (Collision.CanMoveHere(player1.hitbox.x, player1.hitbox.y + airSpeed, player1.hitbox.width, player1.hitbox.height, player1.lvlData)) {
+                        player1.hitbox.y += airSpeed;
                         airSpeed += gravity;
                         updateXPos(xSpeed);
                     } else {
@@ -151,16 +171,16 @@ public class GameFrame extends JFrame {
                     updateXPos(xSpeed);
                 }
 
-                    enemyManager.update(levelManager.getCurrentLevel().getLevelData(), me);
-                    enemyManager.update(levelManager.getCurrentLevel().getLevelData(), enemy);
+                    enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player1);
+                    enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player2);
                 
 
                 dc.repaint();
             }
 
             private void updateXPos(double xSpeed) {
-                if (Collision.CanMoveHere(me.hitbox.x + xSpeed, me.hitbox.y, me.hitbox.width, me.hitbox.height, me.lvlData)) {
-                    me.moveH(xSpeed);
+                if (Collision.CanMoveHere(player1.hitbox.x + xSpeed, player1.hitbox.y, player1.hitbox.width, player1.hitbox.height, player1.lvlData)) {
+                    player1.moveH(xSpeed);
                 } 
             }
 
@@ -194,31 +214,31 @@ public class GameFrame extends JFrame {
                 switch (keyCode) {
                     case KeyEvent.VK_SPACE:
                         jump = true;
-                        me.setJumping(true);
+                        player1.setJumping(true);
                         break; 
                     case KeyEvent.VK_D:
                         right = true;
-                        me.setDirection(RIGHT);
+                        player1.setDirection(RIGHT);
                         break;
                     case KeyEvent.VK_F:
                         run = true;
-                        me.running(true);
+                        player1.running(true);
                         break;
                     case KeyEvent.VK_A:
                         left = true;
-                        me.setDirection(LEFT);
+                        player1.setDirection(LEFT);
                         break;
                     case KeyEvent.VK_P:
-                        me.punching(true);
+                        player1.punching(true);
                         break;
                     case KeyEvent.VK_K:
-                        me.kicking(true);
+                        player1.kicking(true);
                         break;
                     case KeyEvent.VK_O:
-                        me.oppPunching(true);
+                        player1.oppPunching(true);
                         break;
                     case KeyEvent.VK_S:
-                        me.crouching(true);
+                        player1.crouching(true);
                         break;
                 }
             }
@@ -229,31 +249,31 @@ public class GameFrame extends JFrame {
                 switch (keyCode) {
                     case KeyEvent.VK_SPACE:
                         jump = false;
-                        me.setJumping(false);
+                        player1.setJumping(false);
                         break; 
                     case KeyEvent.VK_D:
                         right = false;
-                        me.setMoving(false);
+                        player1.setMoving(false);
                         break;
                     case KeyEvent.VK_F:
                         run = false;
-                        me.running(false);
+                        player1.running(false);
                         break;
                     case KeyEvent.VK_A:
                         left = false;
-                        me.setMoving(false);
+                        player1.setMoving(false);
                         break;
                     case KeyEvent.VK_P:
-                        me.punching(false);
+                        player1.punching(false);
                         break;
                     case KeyEvent.VK_K:
-                        me.kicking(false);
+                        player1.kicking(false);
                         break;
                     case KeyEvent.VK_O:
-                        me.oppPunching(false);
+                        player1.oppPunching(false);
                         break;
                     case KeyEvent.VK_S:
-                        me.crouching(false);
+                        player1.crouching(false);
                         break;
                 }
             }
@@ -298,8 +318,8 @@ public class GameFrame extends JFrame {
             g.drawImage(backgroundImg4.getSubimage((int) (xLvlOffset*0.8), 0, GAME_WIDTH, GAME_HEIGHT), 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
             levelManager.draw(g, xLvlOffset);
             
-            enemy.render(g, xLvlOffset);
-            me.render(g, xLvlOffset);
+            player2.render(g, xLvlOffset);
+            player1.render(g, xLvlOffset);
             enemyManager.draw(g, xLvlOffset);
         }
 
@@ -326,18 +346,18 @@ public class GameFrame extends JFrame {
                     int xLvlOffset = dataIn.readInt();
                     boolean left = dataIn.readBoolean();
                     boolean right = dataIn.readBoolean();
-                    if (enemy != null) {
-                        enemy.setX(enemyX);
-                        enemy.setY(enemyY);
-                        enemy.setMoving(moved);
-                        enemy.punching(punched);
-                        enemy.kicking(kicked);
-                        enemy.oppPunching(oppPunched);
-                        enemy.running(ran);
-                        enemy.crouching(crouched);
-                        enemy.setOffset(xLvlOffset);
-                        enemy.setLeft(left);
-                        enemy.setRight(right);
+                    if (player2 != null) {
+                        player2.setX(enemyX);
+                        player2.setY(enemyY);
+                        player2.setMoving(moved);
+                        player2.punching(punched);
+                        player2.kicking(kicked);
+                        player2.oppPunching(oppPunched);
+                        player2.running(ran);
+                        player2.crouching(crouched);
+                        player2.setOffset(xLvlOffset);
+                        player2.setLeft(left);
+                        player2.setRight(right);
                     }
                 }
                 
@@ -374,18 +394,18 @@ public class GameFrame extends JFrame {
         public void run() {
             try {
                 while(true) {
-                    if (me != null) {
-                        dataOut.writeDouble(me.getX());
-                        dataOut.writeDouble(me.getY());
-                        dataOut.writeBoolean(me.getIfMoving());
-                        dataOut.writeBoolean(me.getIfPunching());
-                        dataOut.writeBoolean(me.getIfKicking());
-                        dataOut.writeBoolean(me.getIfOppPunching());
-                        dataOut.writeBoolean(me.getIfRunning());
-                        dataOut.writeBoolean(me.getIfCrouching());
-                        dataOut.writeInt(me.getOffset());
-                        dataOut.writeBoolean(me.isLeft());
-                        dataOut.writeBoolean(me.isRight());
+                    if (player1 != null) {
+                        dataOut.writeDouble(player1.getX());
+                        dataOut.writeDouble(player1.getY());
+                        dataOut.writeBoolean(player1.getIfMoving());
+                        dataOut.writeBoolean(player1.getIfPunching());
+                        dataOut.writeBoolean(player1.getIfKicking());
+                        dataOut.writeBoolean(player1.getIfOppPunching());
+                        dataOut.writeBoolean(player1.getIfRunning());
+                        dataOut.writeBoolean(player1.getIfCrouching());
+                        dataOut.writeInt(player1.getOffset());
+                        dataOut.writeBoolean(player1.isLeft());
+                        dataOut.writeBoolean(player1.isRight());
                         dataOut.flush();
                     }
                     try {

@@ -1,3 +1,26 @@
+/**
+
+This class contains all the static variables and methods necessary
+for importing images ang getting the data from the level map.
+It translates the rgb codes to set different tiles and entities.
+
+@author Joshua Patrick I. Bandola (240499) Carl A. Basco (240558)
+@version 20 May 2024
+
+I have not discussed the Java language code in my program
+with anyone other than my instructor or the teaching assistants
+assigned to this course.
+
+I have not used Java language code obtained from another student,
+or any other unauthorized source, either modified or unmodified.
+If any Java language code or documentation used in my program
+was obtained from another source, such as a textbook or website,
+that has been clearly noted with a proper citation in the comments
+of my program.
+
+**/
+
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
